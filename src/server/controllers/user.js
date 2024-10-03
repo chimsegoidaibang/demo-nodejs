@@ -16,13 +16,32 @@ const users = [
     },
 ]
 
+function create(request, response) {
+    response.render('users/create')
+}
+function handleCreate(request, response) {
+    const data = request.body
+    users.push(data)
+    response.redirect('')
+}
+function show(request, response) {
+    console.log(request.params)
+    const data = parseInt(request.params.id)
+
+    const result = users.find((user) => user.id == data)
+
+    response.render('users/show', {
+        user: result,
+    })
+}
+
 module.exports = {
-    index: (request, response) => {
+    index: function index(request, response) {
         response.render('users/index', {
             users: users,
         })
     },
-    search: (request, response) => {
+    search: function search(request, response) {
         const searchName = request.query.name
         const result = users.filter(
             (user) =>
@@ -34,22 +53,7 @@ module.exports = {
             users: result,
         })
     },
-    create: (request, response) => {
-        response.render('users/create')
-    },
-    handleCreate: (request, response) => {
-        const data = request.body
-        users.push(data)
-        response.redirect('')
-    },
-    show: (request, response) => {
-        console.log(request.params)
-        const data = parseInt(request.params.id)
-
-        const result = users.find((user) => user.id == data)
-
-        response.render('users/show', {
-            user: result,
-        })
-    },
+    create: create,
+    handleCreate: handleCreate,
+    show: show,
 }

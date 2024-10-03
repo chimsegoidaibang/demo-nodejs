@@ -1,28 +1,24 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const password = encodeURIComponent('Conboanco@1');
-const url = `mongodb+srv://chimsegoimatdat:${password}@cluster0.dtdl1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const { MongoClient, ServerApiVersion } = require('mongodb')
+const username = 'chimsegoimatdat'
+const passwrod = 'Caumq3ADhz2Irpof'
+const url = `mongodb+srv://${username}:${password}@cluster0.dtdl1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 const client = new MongoClient(url, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
+    serverApi: {
+        version: ServerApiVersion.v1,
+        trict: true,
+        deprecationErrors: true,
+    },
+})
 
-    deprecationErrors: true,
-  },
-});
-async function run() {
-  try {
-    await client.connect();
-    await client.db('admin').command({ ping: 1 });
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
-    );
-  } catch (error) {
-    console.log(error);
-  } finally {
-    await client.close();
-  }
+const database = null
+const DATABASE_NAME = 'gettingStarted'
+export const connectDB = async () => {
+    await client.connect()
+    console.log('connect databse')
+    database = client.db(DATABASE_NAME)
 }
 
-const db = client.db('sample_mflix');
-console.log('db', db);
-run().catch(console.dir);
+export const getDB = () => {
+    if (!database) throw new Error('Connect database first!')
+    return database
+}
